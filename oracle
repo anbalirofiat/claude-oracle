@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Gemini Oracle - Wrapper script
+export GEMINI_API_KEY="${GEMINI_API_KEY:-}"
+export VAST_API_KEY="${VAST_API_KEY:-}"
+exec "$(dirname "$0")/venv/bin/python" "$(dirname "$0")/oracle.py" "$@"
