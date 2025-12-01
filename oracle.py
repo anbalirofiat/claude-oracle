@@ -137,6 +137,47 @@ def estimate_tokens(text: str) -> int:
     return len(text) // CHARS_PER_TOKEN
 
 
+# Header for FULLAUTO_CONTEXT.md - ensures Claude reloads instructions after compaction
+FULLAUTO_HEADER = """# ⚠️ FULLAUTO MODE ACTIVE ⚠️
+
+## 🚨 CRITICAL: READ THIS FIRST 🚨
+
+**YOU MUST DO THIS BEFORE ANYTHING ELSE:**
+
+```
+Read the file: ~/.claude/commands/fullauto.md
+```
+
+This is NOT optional. If you skip this step, you will NOT have the instructions needed to operate correctly. You will make mistakes. You will fail the task.
+
+**WHY:** After conversation compaction, you lose the /fullauto command context. The file above contains ALL the instructions for FULLAUTO MODE - how to use the Oracle, the phases, the rules, everything. Without reading it, you're flying blind.
+
+**DO IT NOW:** Use the Read tool on `~/.claude/commands/fullauto.md` BEFORE continuing.
+
+---
+
+"""
+
+
+def ensure_fullauto_header():
+    """Check if FULLAUTO_CONTEXT.md exists and prepend header if missing."""
+    context_file = Path.cwd() / "FULLAUTO_CONTEXT.md"
+
+    if not context_file.exists():
+        return  # No context file, nothing to do
+
+    content = context_file.read_text()
+
+    # Check if header already present (look for the critical marker)
+    if "🚨 CRITICAL: READ THIS FIRST 🚨" in content:
+        return  # Header already exists
+
+    # Prepend header to existing content
+    new_content = FULLAUTO_HEADER + content
+    context_file.write_text(new_content)
+    logger.info("Prepended recovery header to FULLAUTO_CONTEXT.md")
+
+
 def get_gemini_api_key() -> Optional[str]:
     """Get Gemini API key from environment, checking multiple possible names."""
     return os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
@@ -1649,21 +1690,13 @@ Generated images: ~/.oracle/images/
         help="Number of lines to show"
     )
 
-    # context command - manage FULLAUTO_CONTEXT.md
-    context_parser = subparsers.add_parser("context", help="Manage FULLAUTO_CONTEXT.md")
-    context_parser.add_argument(
-        "action",
-        choices=["init", "show"],
-        help="Action: init (create with header), show (display current)"
-    )
-    context_parser.add_argument(
-        "task",
-        nargs="?",
-        default="",
-        help="Task description (for init)"
-    )
+    # context command - view FULLAUTO_CONTEXT.md
+    context_parser = subparsers.add_parser("context", help="Show FULLAUTO_CONTEXT.md")
 
     args = parser.parse_args()
+
+    # Auto-prepend recovery header to FULLAUTO_CONTEXT.md if it exists without one
+    ensure_fullauto_header()
 
     if args.command == "ask":
         # Parse files argument
@@ -1786,49 +1819,10 @@ Generated images: ~/.oracle/images/
 
     elif args.command == "context":
         context_file = Path.cwd() / "FULLAUTO_CONTEXT.md"
-
-        if args.action == "init":
-            task = args.task or "[TASK DESCRIPTION HERE]"
-            header = f"""# ⚠️ FULLAUTO MODE ACTIVE ⚠️
-
-## 🚨 CRITICAL: READ THIS FIRST 🚨
-
-**YOU MUST DO THIS BEFORE ANYTHING ELSE:**
-
-```
-Read the file: ~/.claude/commands/fullauto.md
-```
-
-This is NOT optional. If you skip this step, you will NOT have the instructions needed to operate correctly. You will make mistakes. You will fail the task.
-
-**WHY:** After conversation compaction, you lose the /fullauto command context. The file above contains ALL the instructions for FULLAUTO MODE - how to use the Oracle, the phases, the rules, everything. Without reading it, you're flying blind.
-
-**DO IT NOW:** Use the Read tool on `~/.claude/commands/fullauto.md` BEFORE continuing.
-
----
-
-## Current Task
-{task}
-
-## Progress
-- [ ] Step 1: [description]
-- [ ] Step 2: [description]
-
-## Key Context
-[Important decisions, blockers, relevant files]
-
-## Next Steps
-[Specific next action - after reading fullauto.md, continue from here]
-"""
-            context_file.write_text(header)
-            print(f"✓ Created {context_file}")
-            print(f"  Task: {task[:60]}{'...' if len(task) > 60 else ''}")
-
-        elif args.action == "show":
-            if context_file.exists():
-                print(context_file.read_text())
-            else:
-                print(f"No FULLAUTO_CONTEXT.md found in {Path.cwd()}")
+        if context_file.exists():
+            print(context_file.read_text())
+        else:
+            print(f"No FULLAUTO_CONTEXT.md found in {Path.cwd()}")
 
     else:
         parser.print_help()

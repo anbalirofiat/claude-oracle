@@ -55,15 +55,26 @@ First, you MUST update the project context. Do the following:
    - CLAUDE.md
    - Any architecture docs
 
-4. **Create FULLAUTO_CONTEXT.md** by running:
+4. **Create FULLAUTO_CONTEXT.md** in the project root with:
 
-```bash
-oracle context init "PASTE THE USER'S EXACT REQUEST HERE"
+```markdown
+## Current Task
+[USER'S ORIGINAL REQUEST - copy exactly]
+
+## Progress
+- [ ] Step 1: [description]
+- [ ] Step 2: [description]
+
+## Key Context
+[Important decisions, blockers, relevant files]
+
+## Next Steps
+[Specific next action]
 ```
 
-This creates the context file with the critical post-compaction recovery header already included. Then edit the file to fill in Progress, Key Context, and Next Steps as you work.
+**Note:** The recovery header is auto-prepended by the Oracle on any command. Just write the content above.
 
-**Keep it short.** The full instructions live in this file (`~/.claude/commands/fullauto.md`). The context file just tracks state and tells your future self to reload this file.
+**Keep it short.** Full instructions live in this file (`~/.claude/commands/fullauto.md`).
 
 ---
 
