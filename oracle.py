@@ -1170,23 +1170,25 @@ client = genai.Client(api_key=api_key)
 prompt = """{escaped_prompt}"""
 
 try:
-    response = client.models.generate_content(
-        model="gemini-2.0-flash-exp",
-        contents=[types.Content(role="user", parts=[types.Part.from_text(text=prompt)])],
-        config=types.GenerateContentConfig(response_modalities=["IMAGE", "TEXT"]),
+    config = types.GenerateContentConfig(
+        response_modalities=["IMAGE", "TEXT"],
+        image_config=types.ImageConfig(image_size="2K"),
     )
 
-    if not response.candidates or not response.candidates[0].content:
-        print("ERROR: No content in response", file=sys.stderr)
-        sys.exit(1)
-
-    for part in response.candidates[0].content.parts:
-        if hasattr(part, "inline_data") and part.inline_data and part.inline_data.data:
-            output_path = "/tmp/{output_filename}"
-            with open(output_path, "wb") as f:
-                f.write(part.inline_data.data)
-            print(output_path)  # This is the only stdout - the path
-            sys.exit(0)
+    for chunk in client.models.generate_content_stream(
+        model="gemini-3-pro-image-preview",
+        contents=[types.Content(role="user", parts=[types.Part.from_text(text=prompt)])],
+        config=config,
+    ):
+        if chunk.candidates is None or chunk.candidates[0].content is None or chunk.candidates[0].content.parts is None:
+            continue
+        for part in chunk.candidates[0].content.parts:
+            if hasattr(part, "inline_data") and part.inline_data and part.inline_data.data:
+                output_path = "/tmp/{output_filename}"
+                with open(output_path, "wb") as f:
+                    f.write(part.inline_data.data)
+                print(output_path)  # This is the only stdout - the path
+                sys.exit(0)
 
     print("ERROR: No image in response", file=sys.stderr)
     sys.exit(1)
@@ -1447,46 +1449,49 @@ def imagine(
         log_debug("Building GenerateContentConfig for image generation...", debug)
         config = types.GenerateContentConfig(
             response_modalities=["IMAGE", "TEXT"],
+            image_config=types.ImageConfig(image_size="2K"),
         )
 
-        log_info("Calling Gemini API for image generation...", debug)
-        response = client.models.generate_content(
-            model="gemini-2.0-flash-exp",
+        log_info("Calling Gemini API for image generation (streaming)...", debug)
+
+        # Use streaming for gemini-3-pro-image-preview
+        for chunk in client.models.generate_content_stream(
+            model="gemini-3-pro-image-preview",
             contents=contents,
             config=config,
-        )
+        ):
+            if (
+                chunk.candidates is None
+                or chunk.candidates[0].content is None
+                or chunk.candidates[0].content.parts is None
+            ):
+                continue
 
-        log_debug("Response received", debug)
+            for part in chunk.candidates[0].content.parts:
+                if hasattr(part, 'inline_data') and part.inline_data and part.inline_data.data:
+                    inline_data = part.inline_data
+                    image_bytes = inline_data.data
+                    mime_type = inline_data.mime_type
 
-        # Extract image from response
-        if not response.candidates or not response.candidates[0].content:
-            return (None, "No content in response")
+                    # Determine file extension from response
+                    ext = mimetypes.guess_extension(mime_type) or '.png'
+                    if ext == '.jpe':
+                        ext = '.jpg'
 
-        for part in response.candidates[0].content.parts:
-            if hasattr(part, 'inline_data') and part.inline_data and part.inline_data.data:
-                inline_data = part.inline_data
-                image_bytes = inline_data.data
-                mime_type = inline_data.mime_type
+                    # Update save_path with correct extension if different
+                    if save_path.suffix != ext:
+                        save_path = save_path.with_suffix(ext)
 
-                # Determine file extension from response
-                ext = mimetypes.guess_extension(mime_type) or '.png'
-                if ext == '.jpe':
-                    ext = '.jpg'
+                    # Save the image
+                    with open(save_path, 'wb') as f:
+                        f.write(image_bytes)
 
-                # Update save_path with correct extension if different
-                if save_path.suffix != ext:
-                    save_path = save_path.with_suffix(ext)
+                    log_info(f"Image saved to: {save_path}", debug)
+                    return (str(save_path), None)
 
-                # Save the image
-                with open(save_path, 'wb') as f:
-                    f.write(image_bytes)
-
-                log_info(f"Image saved to: {save_path}", debug)
-                return (str(save_path), None)
-
-            elif hasattr(part, 'text') and part.text:
-                # Log any text response (might contain additional info)
-                log_debug(f"Text in response: {part.text[:200]}", debug)
+                elif hasattr(part, 'text') and part.text:
+                    # Log any text response (might contain additional info)
+                    log_debug(f"Text in response: {part.text[:200]}", debug)
 
         return (None, "No image data in response")
 
