@@ -608,7 +608,7 @@ def summarize_response(response: dict) -> str:
 
 
 def get_context_file(debug: bool = False) -> Tuple[Optional[str], int]:
-    """Find and read the FULLAUTO_CONTEXT.md file."""
+    """Find and read the FULLAUTO_CONTEXT.md file (excluding appended fullauto instructions)."""
     current = Path.cwd()
     log_debug(f"Searching for FULLAUTO_CONTEXT.md starting from: {current}", debug)
 
@@ -619,6 +619,13 @@ def get_context_file(debug: bool = False) -> Tuple[Optional[str], int]:
         if context_file.exists():
             log_info(f"Found context file: {context_file}", debug)
             content = context_file.read_text()
+
+            # Strip out the auto-appended fullauto instructions (Oracle doesn't need them)
+            disclaimer_marker = "<!-- AUTO-GENERATED FULLAUTO INSTRUCTIONS -->"
+            if disclaimer_marker in content:
+                content = content[:content.find(disclaimer_marker)].rstrip()
+                log_debug("Stripped appended fullauto instructions from context", debug)
+
             tokens = estimate_tokens(content)
             log_debug(f"Context file size: {len(content)} chars, ~{tokens} tokens", debug)
             return (content, tokens)
