@@ -184,7 +184,7 @@ When you believe the task is complete:
 ## CRITICAL RULES FOR FULLAUTO MODE
 
 1. **NEVER stop without completing the task** - If you need to compact, leave clear notes in FULLAUTO_CONTEXT.md about current progress
-2. **Consult the Oracle for KEY decisions only** - Don't spam the Oracle for trivial things (remember: only 5 exchanges retained!)
+2. **Consult the Oracle throughout** - Not just at the start. Check in after completing major steps, when stuck, or before risky changes. Don't go more than 3-4 steps without Oracle contact.
 3. **Always update todos** - The user should be able to see your progress
 4. **Test rigorously** - Verify your work actually functions
 5. **Be efficient** - Parallelize where possible, don't waste tokens on unnecessary exploration
