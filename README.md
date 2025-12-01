@@ -46,6 +46,10 @@ oracle quick "regex for email validation"
 # Conversation history (5 exchanges per project)
 oracle history
 oracle history --clear
+
+# Create FULLAUTO_CONTEXT.md with recovery header (for /fullauto mode)
+oracle context init "your task description"
+oracle context show
 ```
 
 ## Claude Code Integration
@@ -82,7 +86,12 @@ export VAST_API_KEY="your-vast-key"
 
 The Oracle maintains a 5-exchange conversation history per project directory. This gives Gemini enough context to make useful suggestions without blowing up the context window.
 
-For `/fullauto` mode, Claude writes to `FULLAUTO_CONTEXT.md` in your project root - this acts as persistent memory that survives conversation compactions.
+For `/fullauto` mode, Claude runs `oracle context init` to create `FULLAUTO_CONTEXT.md` in your project root. This file:
+- Acts as persistent memory that survives conversation compactions
+- Contains a prominent header telling post-compaction Claude to reload the `/fullauto` instructions
+- Tracks task progress, key decisions, and next steps
+
+When Claude's context compacts mid-task, the new instance reads `FULLAUTO_CONTEXT.md`, sees the recovery instructions, reloads the full `/fullauto` command, and continues where it left off.
 
 ## Meta
 
