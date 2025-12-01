@@ -756,7 +756,7 @@ def ask_oracle(
 
         log_info("Calling Gemini API (this may take a moment)...", debug)
         response = client.models.generate_content(
-            model="gemini-2.5-pro-preview-06-05",
+            model="gemini-3-pro-preview",
             contents=contents,
             config=config,
         )
@@ -1537,7 +1537,7 @@ def quick_ask(query: str, debug: bool = False, no_history: bool = False) -> str:
 
         log_info("Calling Gemini API...", debug)
         response = client.models.generate_content(
-            model="gemini-2.5-pro-preview-06-05",
+            model="gemini-3-pro-preview",
             contents=full_prompt,
             config=types.GenerateContentConfig(
                 thinking_config=types.ThinkingConfig(thinking_budget=5000),
