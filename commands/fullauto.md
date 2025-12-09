@@ -33,6 +33,25 @@ Before ANY long-running operation:
 - **SHOW the Oracle's response to the user** - summarize key insights
 - Update FULLAUTO_CONTEXT.md before each Oracle query
 
+## 📁 FULLAUTO_CONTEXT.md IS SACRED 📁
+
+**CRITICAL: FULLAUTO_CONTEXT.md MUST be tracked in git!**
+
+- **NEVER** add FULLAUTO_CONTEXT.md to .gitignore
+- **NEVER** leave it untracked
+- This file is auto-sent to Oracle with every query
+- During conversation compaction, this file preserves critical context
+- If untracked/ignored, you LOSE all project context when compacting!
+
+```bash
+# Verify it's tracked:
+git ls-files FULLAUTO_CONTEXT.md  # Should show the file
+
+# If missing, add it immediately:
+git add FULLAUTO_CONTEXT.md
+git commit -m "Track FULLAUTO_CONTEXT.md for conversation continuity"
+```
+
 ## 🎯 THE FLOW THAT WORKS
 
 ```
