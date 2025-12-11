@@ -12,10 +12,20 @@ The `/fullauto` command will activate the whole system, Claude will autonomously
 
 ## Quick Start
 
+### Linux / macOS
+
 ```bash
 git clone https://github.com/n1ira/claude-oracle.git
 cd claude-oracle
 ./install.sh
+```
+
+### Windows
+
+```bash
+git clone https://github.com/n1ira/claude-oracle.git
+cd claude-oracle
+install.cmd
 ```
 
 ### Option 1: Vertex AI Express (Recommended for Gemini 3 Pro)
