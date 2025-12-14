@@ -33,6 +33,34 @@ Before ANY long-running operation:
 - **SHOW the Oracle's response to the user** - summarize key insights
 - Update FULLAUTO_CONTEXT.md before each Oracle query
 
+## 🔴 MANDATORY ORACLE VALIDATION AFTER CODE CHANGES 🔴
+
+**EVERY TIME you write or modify code, you MUST validate with Oracle BEFORE moving on:**
+
+```bash
+# After ANY code change:
+oracle ask --mode=validate --files "path/to/changed/file.py" validate_changes
+```
+
+**NO EXCEPTIONS. The user expects Oracle-verified code.**
+
+If Oracle finds issues:
+1. FIX the issues immediately
+2. Re-validate until Oracle approves
+3. Only THEN proceed to next task
+
+## 🔍 ORACLE USAGE (SIMPLE!)
+
+**Just type naturally - no quotes needed:**
+```bash
+# All of these work!
+oracle ask How should I implement caching?
+oracle ask --files src/main.py Review this code for bugs
+oracle ask -f src/a.py -f src/b.py -f src/c.py Review the architecture
+oracle ask --files src/a.py,src/b.py,src/c.py Review the architecture
+oracle ask --mode=validate --files src/feature.py Validate my implementation
+```
+
 ## 📁 FULLAUTO_CONTEXT.md IS SACRED 📁
 
 **CRITICAL: FULLAUTO_CONTEXT.md MUST be tracked in git!**
@@ -57,12 +85,19 @@ git commit -m "Track FULLAUTO_CONTEXT.md for conversation continuity"
 ```
 1. User Request → 2. Context Gathering → 3. Oracle Strategic Plan
        ↓                                         ↓
-4. Execute with TodoWrite → 5. Oracle Validation → 6. Oracle "What's Next?"
-       ↓                                         ↓
-7. Show User Summary ← ← ← ← ← ← ← ← ← ← ← ← ← ←
+4. Execute with TodoWrite → 5. ORACLE VALIDATION (MANDATORY!) → 6. Oracle "What's Next?"
+       ↓                           ↓                                    ↓
+       ↓                    Fix issues if any                          ↓
+       ↓                           ↓                                    ↓
+7. Show User Summary ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ←
 ```
 
-**Key Insight**: After completing a milestone, ALWAYS ask Oracle "What should be the next major phase?" with context on what's done. This keeps momentum and shows the user strategic options.
+**Key Insight**: After completing a milestone, ALWAYS:
+1. **VALIDATE with Oracle** - Send the code you wrote for review
+2. **Fix any issues** Oracle identifies
+3. **Ask Oracle "What's next?"** with context on what's done
+
+**VALIDATION IS NOT OPTIONAL. Do not skip step 5.**
 
 ## 🚫 NEVER STOP INFERENCE 🚫
 
@@ -186,7 +221,7 @@ oracle ask --mode=validate --files src/feature.py --pretty \
 
 ---
 
-## PHASE 5: STRATEGIC NEXT STEPS (THE KEY ADDITION!)
+## PHASE 5: STRATEGIC NEXT STEPS
 
 **After completing a milestone, ALWAYS do this:**
 
@@ -245,9 +280,53 @@ oracle ask --no-history "..."     # Fresh perspective
 1. **Always use --pretty** for readable Oracle responses
 2. **Show Oracle responses to user** - they want to see strategic thinking
 3. **Use TodoWrite religiously** - user should always see progress
-4. **After milestones, ask "What's next?"** - keeps momentum
-5. **Test as you go** - verify your work functions
-6. **Attach files when asking about code** - Oracle is blind otherwise
+4. **VALIDATE ALL CODE CHANGES WITH ORACLE** - This is mandatory, not optional!
+5. **After milestones, ask "What's next?"** - keeps momentum
+6. **Test as you go** - verify your work functions
+7. **Attach files when asking about code** - Oracle is blind otherwise
+8. **Type naturally** - no quotes needed (e.g., `oracle ask Review my code` just works)
+
+---
+
+## 🧠 ENGINEERING DISCIPLINE (NON-NEGOTIABLE)
+
+### Context is Everything
+- **ALWAYS attach relevant files** when consulting Oracle - it has ZERO access to your code otherwise
+- Include dependencies, not just the file you're asking about
+- More context = better advice. When in doubt, attach more files.
+- **NEVER** ask Oracle about code without providing the code
+
+### System Hygiene
+- **CHECK for background tasks** before starting compute-heavy work (`nvidia-smi`, `ps aux`)
+- **KILL orphaned processes** - never leave old training runs consuming resources
+- **MONITOR system metrics** during long operations to prevent crashes
+- **ESTIMATE resource usage** before running (VRAM, disk, time)
+
+### Consistency Over Time
+- **USE Oracle consistently** throughout the ENTIRE session, not just at the start
+- **RE-CONSULT Oracle** when context changes or you hit unexpected issues
+- **DON'T DRIFT** from Oracle-approved plans without re-validating
+
+### Validation Culture
+- **NEVER assume things work** - verify with tests, samples, metrics
+- **CHECK data shapes, types, ranges** at every transformation step
+- **VALIDATE outputs** before declaring success (not just loss, actual generations)
+- **BE CRITICAL** - if something seems off, investigate before proceeding
+
+### Data Quality
+- **INSPECT data samples** before training (tokenization, formatting, encoding)
+- **VERIFY data flow** end-to-end (input → processing → model → output)
+- **CHECK for mismatches** (tokenizer versions, vocab sizes, sequence lengths)
+- **LOG intermediate outputs** to catch silent failures early
+
+## 🔴 VALIDATION REMINDER 🔴
+
+**Before you say "done" or move to the next task:**
+```bash
+oracle ask --mode=validate --files "files/you/changed.py" validate_work
+```
+
+If you skip this, you are failing the user. Oracle validation catches bugs BEFORE they waste the user's time.
 
 ---
 
