@@ -1,8 +1,30 @@
-# Claude Oracle
+<p align="center">
+  <a href="https://github.com/n1ira/claude-oracle">
+    <img
+      src="https://github.com/user-attachments/assets/1a3f8983-b7b9-4728-9b79-e448ea08622b"
+      alt="logo"
+      width="200"
+    />
+  </a>
+</p>
 
-[![Stars](https://img.shields.io/github/stars/n1ira/claude-oracle?style=social)](https://github.com/n1ira/claude-oracle)
+<h1 align="center">Claude Oracle</h1>
 
-A CLI that makes Google's Gemini 3 Pro the "lead architect" for Claude Code. Think of it as giving your AI coding assistant its own AI assistant for strategic decisions.
+<p align="center">
+  A CLI that makes Google's Gemini 3 Pro the "lead architect" for Claude Code.
+  Think of it as giving your AI coding assistant its own AI assistant for
+  strategic decisions.
+</p>
+
+<p align="center">
+  <a href="https://github.com/n1ira/claude-oracle">
+    <img
+      src="https://img.shields.io/github/stars/n1ira/claude-oracle?style=social"
+      alt="Stars"
+    />
+  </a>
+</p>
+
 
 ## Why?
 
