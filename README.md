@@ -173,6 +173,10 @@ This repo was created using itself. The `/fullauto` command orchestrated Claude 
 
 The Oracle bootstrapping its own existence.
 
+## Credits
+
+- Logo by [@Microck](https://github.com/Microck)
+
 ## License
 
 MIT
